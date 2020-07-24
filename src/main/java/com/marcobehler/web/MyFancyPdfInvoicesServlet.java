@@ -1,8 +1,7 @@
 package com.marcobehler.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.marcobehler.model.Invoice;
-import com.marcobehler.service.InvoiceService;
+import com.marcobehler.context.Application;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -10,9 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class MyFancyPdfInvoicesServlet extends HttpServlet {
-
-    private InvoiceService invoiceService = new InvoiceService();
-    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -28,7 +24,7 @@ public class MyFancyPdfInvoicesServlet extends HttpServlet {
             );
         } else if (request.getRequestURI().equalsIgnoreCase("/invoices")) {
             response.setContentType("application/json; charset=UTF-8");
-            response.getWriter().print(objectMapper.writeValueAsString(invoiceService.findAll()));
+            response.getWriter().print(Application.objectMapper.writeValueAsString(Application.invoiceService.findAll()));
         }
     }
 
@@ -38,10 +34,10 @@ public class MyFancyPdfInvoicesServlet extends HttpServlet {
             String userId = request.getParameter("user_id");
             Integer amount = Integer.valueOf(request.getParameter("amount"));
 
-            Invoice invoice = invoiceService.create(userId, amount);
+            Invoice invoice = Application.invoiceService.create(userId, amount);
 
             response.setContentType("application/json; charset=UTF-8");
-            response.getWriter().print(objectMapper.writeValueAsString(invoice));
+            response.getWriter().print(Application.objectMapper.writeValueAsString(invoice));
         } else {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
