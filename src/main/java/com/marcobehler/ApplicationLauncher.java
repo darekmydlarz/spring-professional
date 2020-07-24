@@ -1,5 +1,6 @@
 package com.marcobehler;
 
+import com.marcobehler.web.MyFancyPdfInvoicesServlet;
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.Wrapper;
@@ -13,7 +14,7 @@ public class ApplicationLauncher {
         tomcat.getConnector();
 
         Context context = tomcat.addContext("", null);
-        Wrapper servlet = Tomcat.addServlet(context, "myFirstServlet", new MyFirstServlet());
+        Wrapper servlet = Tomcat.addServlet(context, "myFirstServlet", new MyFancyPdfInvoicesServlet());
         servlet.setLoadOnStartup(1);
         servlet.addMapping("/*");
 
